@@ -4,11 +4,11 @@ export interface NotificationOptions {
   title: string;
   message: string;
   iconUrl?: string;
-  type?: chrome.notifications.TemplateType;
+  type?: string;
   priority?: number;
-  buttons?: chrome.notifications.ButtonOptions[];
+  buttons?: any[];
   progress?: number;
-  items?: chrome.notifications.ItemOptions[];
+  items?: any[];
   contextMessage?: string;
   requireInteraction?: boolean;
   silent?: boolean;
@@ -31,7 +31,7 @@ export interface NotificationResult {
 
 // Default configuration
 const DEFAULT_NOTIFICATION_OPTIONS: Partial<NotificationOptions> = {
-  type: 'basic',
+  type: 'basic' as string,
   iconUrl: '/icon48.png',
   priority: 1,
   requireInteraction: false,
@@ -204,32 +204,36 @@ class NotificationsUtil {
     return new Promise((resolve) => {
       const notificationId = `chrome-markdownify-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-      chrome.notifications.create(notificationId, finalOptions, (createdId) => {
-        if (chrome.runtime.lastError) {
+      chrome.notifications.create(
+        notificationId,
+        finalOptions as any,
+        (createdId) => {
+          if (chrome.runtime.lastError) {
+            resolve({
+              success: false,
+              method: 'chrome-api',
+              error: chrome.runtime.lastError.message,
+            });
+            return;
+          }
+
+          // Set up auto-dismiss timer if not requiring interaction
+          if (!finalOptions.requireInteraction) {
+            const timeout = setTimeout(() => {
+              chrome.notifications.clear(createdId);
+              this.notificationTimeouts.delete(createdId);
+            }, 3000);
+
+            this.notificationTimeouts.set(createdId, timeout);
+          }
+
           resolve({
-            success: false,
+            success: true,
+            notificationId: createdId,
             method: 'chrome-api',
-            error: chrome.runtime.lastError.message,
           });
-          return;
         }
-
-        // Set up auto-dismiss timer if not requiring interaction
-        if (!finalOptions.requireInteraction) {
-          const timeout = setTimeout(() => {
-            chrome.notifications.clear(createdId);
-            this.notificationTimeouts.delete(createdId);
-          }, 3000);
-
-          this.notificationTimeouts.set(createdId, timeout);
-        }
-
-        resolve({
-          success: true,
-          notificationId: createdId,
-          method: 'chrome-api',
-        });
-      });
+      );
     });
   }
 

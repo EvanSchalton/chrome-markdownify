@@ -529,11 +529,7 @@ chrome.runtime.onMessage.addListener(
 
 // Add listener for when tabs are updated (e.g., navigation)
 chrome.tabs.onUpdated.addListener(
-  (
-    _tabId: number,
-    changeInfo: chrome.tabs.TabChangeInfo,
-    tab: chrome.tabs.Tab
-  ): void => {
+  (_tabId: number, changeInfo: any, tab: chrome.tabs.Tab): void => {
     // We could inject content script here if needed, but it's already handled by manifest
     if (
       changeInfo.status === 'complete' &&

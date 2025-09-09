@@ -86,7 +86,7 @@ global.Blob = class MockBlob {
   }
 
   slice(): Blob {
-    return new MockBlob([]);
+    return new MockBlob([]) as any;
   }
 
   stream(): ReadableStream {

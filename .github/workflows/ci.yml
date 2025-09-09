@@ -1,0 +1,114 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linter
+        run: pnpm lint
+
+      - name: Run type check
+        run: pnpm tsc --noEmit
+
+      - name: Run tests
+        run: pnpm test --run
+
+      - name: Build extension
+        run: pnpm build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-extension-dist
+          path: dist/
+          retention-days: 7
+
+  build-release:
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build extension
+        run: pnpm build
+
+      - name: Create ZIP for Chrome Web Store
+        run: |
+          cd dist
+          zip -r ../chrome-markdownify.zip .
+          cd ..
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-markdownify-release
+          path: chrome-markdownify.zip
+          retention-days: 30
+
+      - name: Get version from package.json
+        id: package-version
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        if: contains(github.event.head_commit.message, '[release]')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.package-version.outputs.VERSION }}
+          name: Release v${{ steps.package-version.outputs.VERSION }}
+          body: |
+            Chrome Markdownify v${{ steps.package-version.outputs.VERSION }}
+            
+            ## Installation
+            1. Download the `chrome-markdownify.zip` file from the assets below
+            2. Open Chrome and navigate to `chrome://extensions/`
+            3. Enable "Developer mode"
+            4. Drag and drop the ZIP file or use "Load unpacked" after extracting
+            
+            ## What's Changed
+            See commit history for details.
+          files: chrome-markdownify.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

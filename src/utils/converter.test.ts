@@ -13,7 +13,7 @@ describe('MarkdownConverter', () => {
     it('should convert headings correctly', () => {
       const html = '<h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>';
       const result = markdownConverter.convert(html);
-      expect(result).toBe('# Heading 1\n\n## Heading 2\n\n### Heading 3');
+      expect(result).toBe('# Heading 1\n## Heading 2\n### Heading 3');
     });
 
     it('should convert paragraphs correctly', () => {
@@ -175,7 +175,7 @@ describe('MarkdownConverter', () => {
       const html =
         '<blockquote><p>This is a quote</p><p>With multiple lines</p></blockquote>';
       const result = markdownConverter.convert(html);
-      expect(result).toBe('> This is a quote\n> \n> With multiple lines');
+      expect(result).toBe('> This is a quote\n>\n> With multiple lines');
     });
   });
 

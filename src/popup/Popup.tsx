@@ -132,7 +132,7 @@ export default function Popup(): JSX.Element {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [currentTab.id, currentTab.url, state.debugMode]);
+  }, [currentTab.id, currentTab.url, state.debugMode, debug]);
 
   // Handle copy actions
   const handleCopy = async (isSelection: boolean = false) => {

@@ -68,23 +68,30 @@ export default function Options(): JSX.Element {
                 Enable console logging for troubleshooting issues
               </p>
             </div>
-            <button
-              id='debugMode'
-              type='button'
-              onClick={handleDebugToggle}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                settings.debugMode ? 'bg-blue-600' : 'bg-gray-200'
-              }`}
-              role='switch'
-              aria-checked={settings.debugMode}
-            >
-              <span className='sr-only'>Enable debug mode</span>
+            <div className='flex items-center gap-2'>
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  settings.debugMode ? 'translate-x-6' : 'translate-x-1'
+                className={`text-sm font-medium ${settings.debugMode ? 'text-green-600' : 'text-gray-400'}`}
+              >
+                {settings.debugMode ? 'ON' : 'OFF'}
+              </span>
+              <button
+                id='debugMode'
+                type='button'
+                onClick={handleDebugToggle}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  settings.debugMode ? 'bg-green-600' : 'bg-gray-300'
                 }`}
-              />
-            </button>
+                role='switch'
+                aria-checked={settings.debugMode}
+              >
+                <span className='sr-only'>Enable debug mode</span>
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
+                    settings.debugMode ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Debug Mode Info */}

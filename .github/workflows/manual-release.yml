@@ -1,0 +1,85 @@
+name: Manual Release Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (leave empty to use package.json version)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build extension
+        run: pnpm build
+
+      - name: Get version
+        id: get-version
+        run: |
+          if [ "${{ github.event.inputs.version }}" != "" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=$(node -p "require('./package.json').version")
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=v${VERSION}" >> $GITHUB_OUTPUT
+          echo "Building version: ${VERSION}"
+
+      - name: Create ZIP archive
+        run: |
+          cd dist
+          zip -r ../chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip .
+          cd ..
+          echo "Created: chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip"
+
+      - name: Check if release exists
+        id: check-release
+        run: |
+          if gh release view ${{ steps.get-version.outputs.TAG_NAME }} > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Release ${{ steps.get-version.outputs.TAG_NAME }} exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Release ${{ steps.get-version.outputs.TAG_NAME }} does not exist"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get-version.outputs.TAG_NAME }}
+          name: Chrome Markdownify ${{ steps.get-version.outputs.TAG_NAME }}
+          body: |
+            ## Manual Release Build
+            
+            This release was built manually from the current state of the repository.
+            
+            ### Installation
+            1. Download `chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip`
+            2. Open Chrome and navigate to `chrome://extensions/`
+            3. Enable "Developer mode"
+            4. Drag and drop the ZIP file or use "Load unpacked" after extracting
+          files: chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

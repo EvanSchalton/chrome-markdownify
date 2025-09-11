@@ -1,0 +1,1 @@
+- always pull/merge origin before pushing new changes

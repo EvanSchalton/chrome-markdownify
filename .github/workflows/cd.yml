@@ -39,7 +39,9 @@ jobs:
       - name: Enable auto-merge for release PR
         if: ${{ steps.release.outputs.pr }}
         run: |
-          gh pr merge ${{ steps.release.outputs.pr }} --auto --merge
+          PR_NUMBER=$(echo '${{ steps.release.outputs.pr }}' | jq -r '.number')
+          echo "Enabling auto-merge for PR #${PR_NUMBER}"
+          gh pr merge ${PR_NUMBER} --auto --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}

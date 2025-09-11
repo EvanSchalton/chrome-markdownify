@@ -8,10 +8,13 @@ on:
       - '**.md'
       - 'docs/**'
       - '.github/*.md'
+      - '.github/workflows/**'  # Skip CD for workflow-only changes
       - 'LICENSE'
       - '.gitignore'
       - '.prettierignore'
       - '.eslintignore'
+      - '.vscode/**'
+      - '.editorconfig'
 
 permissions:
   contents: write
@@ -24,12 +27,22 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
       version: ${{ steps.release.outputs.version }}
+      pr: ${{ steps.release.outputs.pr }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
+
+      # Auto-merge release PRs after checks pass
+      - name: Enable auto-merge for release PR
+        if: ${{ steps.release.outputs.pr }}
+        run: |
+          gh pr merge ${{ steps.release.outputs.pr }} --auto --merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
 
   build-and-upload:
     needs: release-please

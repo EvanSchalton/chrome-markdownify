@@ -42,19 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr).number }}
         run: |
-          # Extract PR number from the JSON output
-          PR_DATA='${{ steps.release.outputs.pr }}'
-          echo "PR data: ${PR_DATA}"
-          
-          # The PR output is a JSON object, extract the number field
-          PR_NUMBER=$(echo "${PR_DATA}" | grep -o '"number":[0-9]*' | cut -d: -f2)
-          
-          if [ -z "${PR_NUMBER}" ]; then
-            echo "Could not extract PR number from output"
-            exit 1
-          fi
-          
           echo "Enabling auto-merge for PR #${PR_NUMBER}"
           gh pr merge ${PR_NUMBER} --auto --merge
 

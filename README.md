@@ -1,6 +1,8 @@
 # Chrome Markdownify
 
-Convert and copy web pages to Markdown format with a single click. Perfect for sharing content with LLMs, note-taking apps, and documentation workflows.
+Convert and copy web pages to Markdown format in just two clicks. Perfect for sharing content with LLMs, note-taking apps, and documentation workflows.
+
+![Chrome Markdownify Context Menu](screenshots/right-click-menu.png)
 
 ## Features
 
@@ -11,36 +13,33 @@ Convert and copy web pages to Markdown format with a single click. Perfect for s
 - **Metadata preservation**: Includes source URL and capture timestamp
 - **Error handling**: Graceful handling of restricted pages and network issues
 
-## Installation (Developers)
+## Installation
 
-1. **Clone the repository**:
+### Quick Install (Recommended)
 
-   ```bash
-   git clone <repository-url>
-   cd chrome-markdownify
-   ```
+1. Download the latest release from the [Releases page](https://github.com/YOUR_USERNAME/chrome-markdownify/releases)
+2. Download the `chrome-markdownify-vX.X.X.zip` file
+3. Open Chrome and navigate to `chrome://extensions/`
+4. Enable "Developer mode" in the top right corner
+5. Drag and drop the ZIP file onto the page, or:
+   - Extract the ZIP file to a folder
+   - Click "Load unpacked" and select the extracted folder
+6. The extension icon should appear in your toolbar
 
-2. **Install dependencies**:
+### Build from Source
 
-   ```bash
-   pnpm install
-   ```
-
-3. **Build the extension**:
-
-   ```bash
-   pnpm build
-   ```
-
-4. **Load in Chrome**:
-   - Open Chrome and navigate to `chrome://extensions/`
-   - Enable "Developer mode" in the top right
-   - Click "Load unpacked" and select the `dist` folder
-   - The extension icon should appear in your toolbar
+For developers who want to build from source, see [DEVELOPER.md](DEVELOPER.md).
 
 ## Usage
 
-### Method 1: Extension Popup
+### Method 1: Context Menus
+
+- Right-click anywhere on a webpage and select "Copy page as Markdown"
+- Select text, then right-click and choose "Copy selection as Markdown"
+
+![Right-click Context Menu](screenshots/right-click-menu.png)
+
+### Method 2: Extension Popup
 
 1. Click the Chrome Markdownify icon in your browser toolbar
 2. Choose from the available options:
@@ -48,14 +47,7 @@ Convert and copy web pages to Markdown format with a single click. Perfect for s
    - **Copy Selection**: Converts only selected text (disabled if no selection)
    - **Settings**: Opens the extension options page (currently minimal)
 
-### Method 2: Context Menus
-
-- Right-click anywhere on a webpage and select "Copy page as Markdown"
-- Select text, then right-click and choose "Copy selection as Markdown"
-
-### Method 3: Toolbar Icon
-
-- Click the extension icon directly to copy the full page (same as Method 1)
+![Extension Popup Menu](screenshots/popup-menu.png)
 
 ### Supported Content
 
@@ -64,102 +56,6 @@ Convert and copy web pages to Markdown format with a single click. Perfect for s
 - Code blocks with language detection
 - Images with alt text and captions
 - Links (both inline and reference style)
-
-### Unsupported Pages
-
-The extension cannot convert:
-
-- Chrome internal pages (`chrome://`)
-- Extension pages (`chrome-extension://`)
-- Local files (`file://`) without proper permissions
-
-## Build Instructions
-
-### Development Build
-
-```bash
-# Start development server with hot reload
-pnpm dev
-```
-
-This creates a development build in the `dist` folder with hot reloading enabled.
-
-### Production Build
-
-```bash
-# Type check and build for production
-pnpm build
-```
-
-### Other Commands
-
-```bash
-# Run tests
-pnpm test
-
-# Run tests with UI
-pnpm test:ui
-
-# Run linter
-pnpm lint
-
-# Preview built extension
-pnpm preview
-```
-
-## Testing
-
-### Automated Tests
-
-```bash
-# Run all tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test --watch
-
-# Run tests with coverage
-pnpm test --coverage
-```
-
-### Manual Testing
-
-1. Load the extension in Chrome (see Installation)
-2. Test on various websites:
-   - Simple text pages (blogs, articles)
-   - Complex layouts (e-commerce, social media)
-   - Pages with tables and code blocks
-   - Pages with images and media
-3. Verify all three access methods work
-4. Test error handling on restricted pages
-5. Check clipboard output in a text editor or Markdown viewer
-
-## Project Structure
-
-```
-src/
-├── background/         # Service worker and background scripts
-├── content/           # Content scripts injected into web pages
-├── popup/             # Extension popup UI
-├── options/           # Extension options page
-├── utils/             # Shared utilities
-│   ├── converter.ts   # HTML to Markdown conversion
-│   ├── clipboard.ts   # Clipboard operations
-│   ├── dom-extractor.ts # DOM content extraction
-│   └── notifications.ts # User notifications
-├── manifest.ts        # Extension manifest configuration
-└── vite-env.d.ts     # TypeScript environment declarations
-```
-
-## Technologies Used
-
-- **TypeScript**: Type-safe development
-- **React**: UI components and state management
-- **Vite**: Fast development and build tooling
-- **Tailwind CSS & DaisyUI**: Styling and UI components
-- **Turndown**: HTML to Markdown conversion
-- **Vitest**: Testing framework
-- **Chrome Extension APIs**: Browser integration
 
 ## Troubleshooting
 
@@ -190,14 +86,7 @@ src/
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and add tests
-4. Run tests: `pnpm test`
-5. Run linter: `pnpm lint`
-6. Commit changes: `git commit -m "Description of changes"`
-7. Push to branch: `git push origin feature-name`
-8. Submit a pull request
+We welcome contributions! Please see [DEVELOPER.md](DEVELOPER.md) for development setup and guidelines.
 
 ## License
 

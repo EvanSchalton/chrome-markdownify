@@ -54,6 +54,21 @@ jobs:
         if: steps.check-release.outputs.is_release != 'true'
         run: pnpm tsc --noEmit
 
+      - name: Check package.json description length
+        if: steps.check-release.outputs.is_release != 'true'
+        run: |
+          DESCRIPTION=$(node -p "require('./package.json').description")
+          LENGTH=${#DESCRIPTION}
+          echo "Description: $DESCRIPTION"
+          echo "Length: $LENGTH characters"
+          if [ $LENGTH -gt 132 ]; then
+            echo "❌ Error: Description exceeds 132 characters (current: $LENGTH)"
+            echo "This is required for Chrome Web Store submission."
+            exit 1
+          else
+            echo "✅ Description length is valid ($LENGTH/132 characters)"
+          fi
+
       - name: Run tests
         if: steps.check-release.outputs.is_release != 'true'
         run: pnpm test run

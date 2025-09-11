@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/*.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - '.prettierignore'
+      - '.eslintignore'
 
 permissions:
   contents: write

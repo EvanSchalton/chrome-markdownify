@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/EvanSchalton/chrome-markdownify/compare/v1.1.0...v1.2.0) (2025-09-11)
+
+
+### Features
+
+* add auto-merge for release PRs and skip CD for workflow changes ([1d422f6](https://github.com/EvanSchalton/chrome-markdownify/commit/1d422f6dd83660d928421e09d405b21804c9dd4e))
+* add description length check and fix oversized description ([1cc67c6](https://github.com/EvanSchalton/chrome-markdownify/commit/1cc67c6e4b02016a20f50e8f83fb38233ba28cd4))
+
 ## [1.1.0](https://github.com/EvanSchalton/chrome-markdownify/compare/v1.0.0...v1.1.0) (2025-09-11)
 
 

@@ -49,7 +49,8 @@ jobs:
 
   build-and-upload:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
+    # Run if release was created OR if manually triggered
+    if: ${{ needs.release-please.outputs.release_created || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -71,16 +72,29 @@ jobs:
       - name: Build extension
         run: pnpm build
 
+      - name: Get version
+        id: get-version
+        run: |
+          if [ "${{ needs.release-please.outputs.version }}" != "" ]; then
+            echo "VERSION=${{ needs.release-please.outputs.version }}" >> $GITHUB_OUTPUT
+            echo "TAG_NAME=${{ needs.release-please.outputs.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            # Get version from package.json for manual runs
+            VERSION=$(node -p "require('./package.json').version")
+            echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+            echo "TAG_NAME=v${VERSION}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create ZIP archive
         run: |
           cd dist
-          zip -r ../chrome-markdownify-v${{ needs.release-please.outputs.version }}.zip .
+          zip -r ../chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip .
           cd ..
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.release-please.outputs.tag_name }}
-          files: chrome-markdownify-v${{ needs.release-please.outputs.version }}.zip
+          tag_name: ${{ steps.get-version.outputs.TAG_NAME }}
+          files: chrome-markdownify-v${{ steps.get-version.outputs.VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

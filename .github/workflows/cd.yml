@@ -39,14 +39,13 @@ jobs:
       # Auto-merge release PRs after checks pass
       - name: Enable auto-merge for release PR
         if: ${{ steps.release.outputs.pr }}
-        run: |
-          echo "PR output: ${{ toJSON(steps.release.outputs.pr) }}"
-          PR_NUMBER=${{ fromJSON(steps.release.outputs.pr).number }}
-          echo "Enabling auto-merge for PR #${PR_NUMBER}"
-          gh pr merge ${PR_NUMBER} --auto --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ fromJSON(steps.release.outputs.pr).number }}
+        run: |
+          echo "Enabling auto-merge for PR #${PR_NUMBER}"
+          gh pr merge ${PR_NUMBER} --auto --merge
 
   build-and-upload:
     needs: release-please

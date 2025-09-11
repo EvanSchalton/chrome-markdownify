@@ -1,7 +1,7 @@
 {
   "name": "chrome-markdownify",
   "displayName": "Chrome Markdownify",
-  "description": "Convert web pages to Markdown in two clicks. Perfect for LLMs, note-taking apps, and documentation.",
+  "description": "Convert web pages to Markdown in just two clicks. Perfect for LLMs, note-taking apps, and documentation.",
   "private": true,
   "version": "1.0.0",
   "type": "module",

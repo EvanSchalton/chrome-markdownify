@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - develop  # Optional: run CI on develop branch pushes
+      - 'release-please--**'  # Run CI on release-please branches
 
 jobs:
   lint-and-test:

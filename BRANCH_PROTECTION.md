@@ -2,6 +2,18 @@
 
 To properly secure the `main` branch and ensure code quality, configure the following branch protection rules in GitHub:
 
+## Prerequisites: GitHub Actions Permissions
+
+Before setting up branch protection, ensure GitHub Actions can create PRs:
+
+1. Go to **Settings** → **Actions** → **General** in your GitHub repository
+2. Scroll to **Workflow permissions**
+3. Select **Read and write permissions**
+4. Check **Allow GitHub Actions to create and approve pull requests**
+5. Click **Save**
+
+This enables release-please to create release PRs automatically.
+
 ## Steps to Enable Branch Protection
 
 1. Go to **Settings** → **Branches** in your GitHub repository

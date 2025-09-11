@@ -17,7 +17,7 @@ Convert and copy web pages to Markdown format in just two clicks. Perfect for sh
 
 ### Quick Install (Recommended)
 
-1. Download the latest release from the [Releases page](https://github.com/YOUR_USERNAME/chrome-markdownify/releases)
+1. Download the latest release from the [Releases page](https://github.com/EvanSchalton/chrome-markdownify/releases)
 2. Download the `chrome-markdownify-vX.X.X.zip` file
 3. Open Chrome and navigate to `chrome://extensions/`
 4. Enable "Developer mode" in the top right corner

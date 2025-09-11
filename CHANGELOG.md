@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/EvanSchalton/chrome-markdownify/compare/v1.1.0...v1.2.0) (2025-09-11)
+
+
+### Features
+
+* add auto-merge for release PRs and skip CD for workflow changes ([1d422f6](https://github.com/EvanSchalton/chrome-markdownify/commit/1d422f6dd83660d928421e09d405b21804c9dd4e))
+* add description length check and fix oversized description ([1cc67c6](https://github.com/EvanSchalton/chrome-markdownify/commit/1cc67c6e4b02016a20f50e8f83fb38233ba28cd4))
+* add manual workflow dispatch trigger to CD ([b5c8c3d](https://github.com/EvanSchalton/chrome-markdownify/commit/b5c8c3ddbf2e7ed917d28736f3c297fe90e6945b))
+* add manual workflow dispatch trigger to CD ([f3c4f40](https://github.com/EvanSchalton/chrome-markdownify/commit/f3c4f4018ff5de2aef657a5bc0ba3c0672546485))
+
+
+### Bug Fixes
+
+* extract PR number from release-please output for auto-merge ([5f853ae](https://github.com/EvanSchalton/chrome-markdownify/commit/5f853ae5f144a2c2b0e60b9d93f2988d5eda994d))
+* properly quote PR JSON to prevent word splitting ([2e8cc09](https://github.com/EvanSchalton/chrome-markdownify/commit/2e8cc093ab3a19512c15923315c85b620d255b58))
+* use GitHub Actions expressions to parse PR number ([6bd2302](https://github.com/EvanSchalton/chrome-markdownify/commit/6bd23027d1b0bb0fcab156325d26ba49fa8c5bcc))
+
 ## [1.1.0](https://github.com/EvanSchalton/chrome-markdownify/compare/v1.0.0...v1.1.0) (2025-09-11)
 
 

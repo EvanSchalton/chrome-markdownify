@@ -2,16 +2,15 @@ name: CI
 
 on:
   pull_request:
-    branches: [main]  # CI runs only on PRs targeting main
+    branches: [main]  # CI runs on all PRs targeting main
     types: [opened, synchronize, reopened]
   push:
     branches:
       - develop  # Optional: run CI on develop branch pushes
+      - 'release-please--**'  # Also run CI on release-please branches
 
 jobs:
   lint-and-test:
-    # Skip CI for release-please PRs (already tested before merge to main)
-    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
     runs-on: ubuntu-latest
 
     strategy:

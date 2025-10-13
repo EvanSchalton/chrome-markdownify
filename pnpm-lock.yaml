@@ -41,8 +41,8 @@ devDependencies:
     specifier: ^0.0.2
     version: 0.0.2(postcss@8.5.6)
   '@types/chrome':
-    specifier: ^0.1.9
-    version: 0.1.9
+    specifier: ^0.1.24
+    version: 0.1.24
   '@types/jsdom':
     specifier: ^21.1.7
     version: 21.1.7
@@ -1503,8 +1503,8 @@ packages:
       '@types/deep-eql': 4.0.2
     dev: true
 
-  /@types/chrome@0.1.9:
-    resolution: {integrity: sha512-Tjzql/wuGkC4Q3FWSziPMbggN0FwQZph4WFhzvnBfmnipzX1vtNBNToAGGpSqAAf26wfKFfZTZmxN8+pgMK9Rw==}
+  /@types/chrome@0.1.24:
+    resolution: {integrity: sha512-9iO9HL2bMeGS4C8m6gNFWUyuPE5HEUFk+rGh+7oriUjg+ata4Fc9PoVlu8xvGm7yoo3AmS3J6fAjoFj61NL2rw==}
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16

@@ -37,7 +37,7 @@ jobs:
 
       - name: Use Node.js ${{ matrix.node-version }}
         if: steps.check-release.outputs.is_release != 'true'
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'

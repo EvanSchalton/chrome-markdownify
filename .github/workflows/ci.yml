@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload build artifacts (for PR review)
         if: github.event_name == 'pull_request' && steps.check-release.outputs.is_release != 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: pr-build-${{ github.event.pull_request.number }}
           path: dist/

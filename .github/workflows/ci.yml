@@ -29,7 +29,7 @@ jobs:
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: steps.check-release.outputs.is_release != 'true'
 
       - uses: pnpm/action-setup@v4
